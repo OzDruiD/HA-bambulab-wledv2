@@ -1,8 +1,9 @@
 # HA-bambulab-wled
-Based on Dreed47 original blueprint.
-Updated Paul Biods with some code errors.
+Based on Dreed47 original blueprint
+OZdruiD- Updated Paul Biods with some code errors.
 
-His info below
+Pauils original descripotion -----
+
 I decided to update his blueprint cause after a bambulab update, the blueprint wasn't working at all. Indeed, the blueprint was based on light chamber state, but now when you turn off your printer, the Home assistant switch "light chamber" stays on. So the wled wasn't switching off. 
 
 I've managed to update the blueprint to use the binary sensor "Printer state" which works flawlessly.
