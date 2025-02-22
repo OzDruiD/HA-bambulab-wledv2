@@ -41,9 +41,8 @@ blueprint:
           filter:
           - integration: wled
           multiple: true
-  source_url: https://gist.github.com/dreed47/b33a76472cc813f7bf48a63c3dde7dce
-alias: Bambu Lab WLED Controller
-description: ''
+alias: Bambu Lab WLED Controller v2
+description: 'Updated in 2025 for new HA Bambu Lab Integration and increase in features'
 trigger:
 - platform: state
   entity_id:
@@ -73,6 +72,10 @@ action:
       entity_id: !input printer_stage
       state: cleaning_nozzle_tip
       alias: cleaning Nozzle Tip
+    - condition: state
+      entity_id: !input printer_stage
+      state: calibrating_extrusion_flow
+      alias: calibrating Extrusion flow
     - condition: state
       entity_id: !input printer_stage
       state: calibrating_extrusion
@@ -130,7 +133,7 @@ action:
           effect: Blink
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to red
+        alias: Turn on Wled to Blinking Red for Faults above
     alias: Do we need to set color to red?
   - choose:
     - conditions:
@@ -150,7 +153,7 @@ action:
           effect: Oscillate
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to fushia with oscillate effect
+        alias: Turn on Wled to fushia with oscillate effect, for Idle Status
     alias: Do we need to set color to white?
   - choose:
     - conditions:
@@ -170,7 +173,7 @@ action:
           effect: Solid
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to full white while printing
+        alias: Turn on Wled to full solid white while printing
     alias: Do we need to set color to white?
   - choose:
     - conditions:
@@ -213,7 +216,7 @@ action:
           effect: Solid
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to green
+        alias: Turn on Wled to green for finished status
     alias: Do we need to set color to green?
   - choose:
     - conditions:
@@ -233,7 +236,7 @@ action:
           effect: Blink
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to green with blink effect
+        alias: Turn on Wled to green with blink green effect if Paused
     alias: Do we need to set color to green?
   - choose:
     - conditions:
@@ -253,7 +256,7 @@ action:
           effect: Blink
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to blue
+        alias: Turn on Wled to Blinking Blue for AutoLeveling mode
     alias: Do we need to set color to blue?
   - choose:
     - conditions:
@@ -264,7 +267,7 @@ action:
           state: heatbed_preheating
         - condition: state
           entity_id: !input printer_stage
-          state: Heating Hotend
+          state: heating_hotend
       sequence:
       - service: light.turn_on
         data:
@@ -276,7 +279,7 @@ action:
           effect: Blink
         target:
           device_id: !input wled_lights
-        alias: Turn on Wled to yellow
+        alias: Turn on Wled to Blinking Yellow for heating stages
     alias: Do we need to set color to yellow?
   else:
     - if:
@@ -299,6 +302,6 @@ action:
           data: {}
           target:
             device_id: !input wled_lights
-          alias: Turn WLED light off
+          alias: Turn WLED light off if printer is detected OFF for more than 15 seconds.
 mode: single
 
